@@ -10,9 +10,6 @@ list_ids_train_labels = sorted(list_ids_train_labels)
 dict_train_inputs = {"ids": list_ids_train_input}
 dict_train_labels = {"ids": list_ids_train_labels}
 
-a = list_ids_train_input
-b = list_ids_train_labels
-
 train_input_df = pd.DataFrame(dict_train_inputs, index = None)
 train_labels_df = pd.DataFrame(dict_train_labels, index = None)
 train_input_df.to_csv("./MelanomaData/train_input_ids.csv")
