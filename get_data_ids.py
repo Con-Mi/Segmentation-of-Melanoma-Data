@@ -13,17 +13,6 @@ dict_train_labels = {"ids": list_ids_train_labels}
 a = list_ids_train_input
 b = list_ids_train_labels
 
-list_diffs = [i for i, j in zip(a, b) if i==j]
-"""
-if not list_diffs:
-    print("The list are not different")
-    train_input_df = pd.DataFrame(dict_train_inputs, index = False)
-    train_labels_df = pd.DataFrame(dict_train_labels, index = False)
-    train_input_df.to_csv("./MelanomaData/train_input_ids.csv")
-    train_labels_df.to_csv("./MelanomaData/train_labels_ids.csv")
-"""
-print(list_diffs)
-print("The list are not different")
 train_input_df = pd.DataFrame(dict_train_inputs, index = None)
 train_labels_df = pd.DataFrame(dict_train_labels, index = None)
 train_input_df.to_csv("./MelanomaData/train_input_ids.csv")
