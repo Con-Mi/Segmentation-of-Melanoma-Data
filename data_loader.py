@@ -12,7 +12,7 @@ class MelanomaDataset(Dataset):
         self.transform = transform
         self.mode = mode
         if self.mode is "train":
-            self.data_dir = os.path.join(self.data_root, "ISIC2018_Task1_Training_Input/")
+            self.data_dir = os.path.join(self.data_root, "ISIC2018_Task1-2_Training_Input/")
             self.label_dir = os.path.join(self.data_root, "ISIC2018_Task1_Training_GroundTruth")
         elif self.mode is "valid":
             self.data_dir = os.path.join(self.data_root, "") # Note a 10% of the training data to be used as validation data
@@ -29,9 +29,9 @@ class MelanomaDataset(Dataset):
         if index not in range(len(self.file_list_data_idx)):
             return self.__getitem__(np.random.randint(o, self.__len__()))
         
-        file_id = self.file_list_idx["ids"].iloc[index]
+        file_id = self.file_list_data_idx["ids"].iloc[index]
         if self.mode is "train":
-            train_id = self.file_list_idx["ids"].iloc[index]
+            train_id = self.file_list_data_idx["ids"].iloc[index]
             label_id = self.file_list_label_idx["ids"].iloc[index]
             self.image_path = os.path.join(self.data_dir, train_id)
             self.label_path = os.path.join(self.label_dir, label_id)
@@ -42,7 +42,7 @@ class MelanomaDataset(Dataset):
                 label = self.transform(label)
             return image, label
         if self.mode is "valid":
-            train_id = self.file_list_idx["ids"].iloc[index]
+            train_id = self.file_list_data_idx["ids"].iloc[index]
             label_id = self.file_list_label_idx["ids"].iloc[index]
             self.image_path = os.path.join(self.data_dir, train_id)
             self.label_path = os.path.join(self.label_dir, label_id)
@@ -53,7 +53,7 @@ class MelanomaDataset(Dataset):
                 label = self.transform(label)
             return image, label
         if self.mode is "test_valid":
-            self.image_path = os.path.join(self.data_dir, file_id))
+            self.image_path = os.path.join(self.data_dir, file_id)
             image = Image.open(self.image_path)
             return image
         if self.mode is "final_test":
@@ -62,8 +62,8 @@ class MelanomaDataset(Dataset):
             return image
 
 def Melanoma_Train_Data(data_transforms = None):
-    file_list_input = pd.read_csv()
-    file_list_label = pd.read_csv()
+    file_list_input = pd.read_csv("./MelanomaData/train_input_ids.csv")
+    file_list_label = pd.read_csv("./MelanomaData/train_labels_ids.csv")
     data_set = MelanomaDataset(file_list_input, file_list_label, transform = data_transforms, mode = "train")
     return data_set
 
