@@ -1,16 +1,14 @@
-from torch.utils import data
-from torch.utils.data import dataset
-from torchvision import utils
-from torchvision import transforms as Trf
+from torch.utils.data import Dataset
 import os
 import pandas as pd
 from PIL import Image
 import numpy as np
 
-class MelanomaDataset(data.Dataset):
-    def __init__(self, file_list_idx, transform = None, mode = "train"):
+class MelanomaDataset(Dataset):
+    def __init__(self, file_list_data_idx, file_list_label_idx = None, transform = None, mode = "train"):
         self.data_root = "./MelanomaData"
-        self.file_list_idx = file_list_idx
+        self.file_list_data_idx = file_list_data_idx
+        self.file_list_label_idx = file_list_label_idx
         self.transform = transform
         self.mode = mode
         if self.mode is "train":
@@ -25,17 +23,18 @@ class MelanomaDataset(data.Dataset):
             self.data_dir = os.path.join(self.data_root, "ISIC2018_Task1-2_Test_Input/")
 
     def __len__(self):
-        return len(self.file_list_idx)
+        return len(self.file_list_data_idx)
     
     def __getitem__(self, index):
-        if index not in range(len(self.file_list_idx)):
+        if index not in range(len(self.file_list_data_idx)):
             return self.__getitem__(np.random.randint(o, self.__len__()))
-
+        
         file_id = self.file_list_idx["ids"].iloc[index]
-
         if self.mode is "train":
-            self.image_path = os.path.join(self.data_dir, file_id)
-            self.label_path = os.path.join(self.label_dir, file_id)
+            train_id = self.file_list_idx["ids"].iloc[index]
+            label_id = self.file_list_label_idx["ids"].iloc[index]
+            self.image_path = os.path.join(self.data_dir, train_id)
+            self.label_path = os.path.join(self.label_dir, label_id)
             image = Image.open(self.image_path)
             label = Image.open(self.label_path)
             if self.transform is not None:
@@ -43,8 +42,10 @@ class MelanomaDataset(data.Dataset):
                 label = self.transform(label)
             return image, label
         if self.mode is "valid":
-            self.image_path = os.path.join(self.data_dir, file_id)
-            self.label_path = os.path.join(self.label_dir, file_id)
+            train_id = self.file_list_idx["ids"].iloc[index]
+            label_id = self.file_list_label_idx["ids"].iloc[index]
+            self.image_path = os.path.join(self.data_dir, train_id)
+            self.label_path = os.path.join(self.label_dir, label_id)
             image = Image.open(self.image_path)
             label = Image.open(self.label_path)
             if self.transform is not None:
@@ -61,22 +62,24 @@ class MelanomaDataset(data.Dataset):
             return image
 
 def Melanoma_Train_Data(data_transforms = None):
-    file_list = pd.read_csv()
-    data_set = MelanomaDataset(file_list, transform = data_transforms, mode = "train")
+    file_list_input = pd.read_csv()
+    file_list_label = pd.read_csv()
+    data_set = MelanomaDataset(file_list_input, file_list_label, transform = data_transforms, mode = "train")
     return data_set
 
 def Melanoma_Valid_Data(data_transforms = None):
-    file_list = pd.read_csv()
-    data_set = MelanomaDataset(file_list, transform = data_transforms, mode = "valid")
+    file_list_input = pd.read_csv()
+    file_list_label = pd.read_csv()
+    data_set = MelanomaDataset(file_list_input, file_list_label, transform = data_transforms, mode = "valid")
     return data_set
 
 def Melanoma_Test_Valid_Data(data_transforms = None):
     file_list = pd.read_csv()
-    data_set = MelanomaDataset(file_list, transform = data_transforms, mode = "test_valid")
+    data_set = MelanomaDataset(file_list_input, file_list_label = None, transform = data_transforms, mode = "test_valid")
     return data_set
 
 def Melanoma_Test_Data(data_transforms = None):
     file_list = pd.read_csv()
-    data_set = MelanomaDataset(file_list, transform = data_transforms, mode = "test")
+    data_set = MelanomaDataset(file_list_input, file_list_label = None, transform = data_transforms, mode = "test")
     return data_set
 
