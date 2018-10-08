@@ -1,12 +1,8 @@
-from data_loader import Melanoma_Train_Data
-from torch.utils.data import DataLoader
-from torchvision import transforms as Trf
+from data_loader import Melanoma_Train_Validation_DataLoader
 
-train_data_set = Melanoma_Train_Data(data_transforms = Trf.Compose([Trf.Resize([512, 512]), Trf.ToTensor()]))
-train_dataloader = DataLoader(train_data_set, batch_size = 4, shuffle = True, num_workers=6)
+train_loader, validation_loader = Melanoma_Train_Validation_DataLoader(batch_size = 1)
 
-for i, sample in enumerate(train_dataloader):
-    input_img, img_label = sample
-    print(input_img.size())
-    print(i)
-
+for i, sample in enumerate(validation_loader):
+    img, label_img = sample
+    print(img.size(2))
+    print(label_img.size(2))
