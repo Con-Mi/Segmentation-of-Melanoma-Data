@@ -28,11 +28,21 @@ class _TransitionLayer(nn.Sequential):
     def __init__(self, num_input_features, num_output_features):
         super(_TransitionLayer, self).__init__()
         self.add_module("group_norm1", nn.GroupNorm(num_groups = num_input_features//8, num_channels = num_input_features))
-        self.add_module("elu1", nn.ELU(inplace = True))
+        self.add_module("elu", nn.ELU(inplace = True))
         self.add_module("conv", nn.Conv2d(in_channels = num_input_features, out_channels = num_output_features, kernel_size = 1, stide = 1, bias = False))
         self.add_module("avg_pool", nn.AvgPool2d(kernel_size = 2, stride = 2))
+
+class _UpsampleBlock(nn.Sequential):
+    def __init__(self, in_channels, middle_channels, out_channels):
+        super(_UpsampleBlock, self).__init__()
+        self.in_channels = in_channels
+        self.add_module("group_norm", nn.GroupNorm(num_groups=in_channels//16, num_channels=in_channels))
+        self.add_module("elu", nn.ELU(inplace = True))
+        self.add_module("upsample_nn", nn.functional.interpolate(scale_factor = 2, mode = "nearest"))
+        self.add_module("conv", nn.Conv2d(num_channels = in_channels, out_channels = , kernel_size=3, stride = 1, padding = 1, bias = False))
+        # UPSAMPLE NN
+        # 
 
 class PyramidalDenseNet(nn.Module):
     def __init__(self, growth_rate=32, block_config=[6, 12, 24, 16], num_init_features=64, bot_neck = 4, drop_rate=0):
         super(PyramidalDenseNet, self).__init__()
-        
