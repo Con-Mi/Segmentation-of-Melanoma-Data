@@ -33,7 +33,7 @@ transform = [ transforms.RandomHorizontalFlip(p=1.0), transforms.RandomVerticalF
 train_loader, validation_loader = Melanoma_Train_Validation_DataLoader(batch_size = batch_size, data_transforms = transforms.Compose([transform, transforms.ToTensor()]))
 
 optimizer = optim.SGD(segm_model.parameters(), lr = learning_rate, momentum = momentum)
-criterion = nn.BCEWithLogitsLoss().cuda() if use_cuda else nn.BCEWithLogitsLoss()
+criterion = nn.BCEWithLogitsLoss().cuda() if use_cuda else nn.BCEWithLogitsLoss()  # Could be dice loss
 
 dataloader_dict = {"train": train_loader, "valid": validation_loader}
 
@@ -43,4 +43,37 @@ def train_model(cust_model, dataloaders, criterion, optimizer, num_epochs = 10, 
     best_acc = 0.0
 
     for epoch in range(num_epochs):
-        print("Epcoh {}/{}".format(epoch, num_epochs - 1))
+        print("Epoch {}/{}".format(epoch, num_epochs - 1))
+        print("_"*15)
+        for phase in ["train", "valid"]:
+            if phase == "train":
+                cust_model.train()
+            if phase == "valid":
+                cust_model.eval()
+            running_loss = 0.0
+            running_corrects = 0
+
+            for input_img, labels in dataloaders[phase]:
+                input_img = input_img.cuda
+                labels = labels.cuda
+
+                optimizer.zero_grad()
+
+            with torch.set_grad_enabled(phase=="train"):
+                outputs = cust_model(input_img)
+                loss = criterion(outputs, labels)
+                # _, preds = torch.max(outputs, 1)
+
+                if phase == "train":
+                    loss.backward()
+                    optimizer.step()
+            running_loss += loss.item() * input_img.size(0)
+        
+        epoch_loss = running_loss / len(dataloaders[phase])
+        # epoch_acc calculate accuracy from Jaccard loss
+        epoch_acc = 0.0
+
+
+
+
+
