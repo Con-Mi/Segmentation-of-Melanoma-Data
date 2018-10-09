@@ -8,6 +8,8 @@ class FCNDense(nn.Module):
     def __init__(self, pretrained = False, num_init_features = 64, growth_rate = 32, bot_neck = 4, n_class = 1):
         super(FCNDense, self).__init__()
         self.encoder = models.densenet121(pretrained = pretrained).features
+        # OBSOLETE and unnecessary
+        """
         self.low_conv = nn.Sequential(OrderedDict([
                 ("conv0", nn.Conv2d(in_channels = 3, out_channels = num_init_features, kernel_size = 7, stride = 2, padding = 3, bias=False)),
                 ("group_norm0", nn.GroupNorm(num_groups = num_init_features//4, num_channels = num_init_features)),
@@ -22,7 +24,7 @@ class FCNDense(nn.Module):
         self.transition_1 = self.encoder[5]
         self.transition_2 = self.encoder[7]
         self.transition_3 = self.encoder[9]
-        
+        """
         # fc1
         self.fc1 = nn.Conv2d(1024, 4096, kernel_size = 1, padding = 0, bias = False)
         self.elu1 = nn.ELU(inplace=True)
@@ -39,8 +41,8 @@ class FCNDense(nn.Module):
 
 
     def forward(self, x):
-        out = self.low_conv(x)
-
+        out = self.encoder(x)
+        """
         out = self.denseblock_1(out)
         out = self.transition_1(out)
 
@@ -51,7 +53,7 @@ class FCNDense(nn.Module):
         out = self.transition_3(out)
 
         out = self.denseblock_4(out)
-
+        """
         out = self.fc1(out)
         out = self.elu1(out)
         out = self.gn1(out)
