@@ -12,6 +12,8 @@ transforms_list = [ transforms.RandomHorizontalFlip(p=1.0), transforms.RandomVer
                     transforms.ColorJitter(hue=0.1) ]
 
 
+# Need at least 20 aumentations
+
 for idx, transform_choice in enumerate(transforms_list):
     train_data = Melanoma_Train_Data(data_transforms=transforms.Compose([transform_choice, transforms.ToTensor()]))
     dataloader = DataLoader(train_data, batch_size = 1, num_workers = 20, shuffle = False)
