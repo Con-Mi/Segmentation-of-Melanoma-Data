@@ -12,6 +12,8 @@ segm_model.train()
 
 for i, sample in enumerate(validation_loader):
     img, label_img = sample
+    img = img.cuda() if use_cuda else img
+    label_img = label_img.cuda() if use_cuda else label_img
     output = segm_model(img)
     print(output.size())
     print(label_img.size())
