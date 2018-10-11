@@ -12,7 +12,7 @@ import copy
 use_cuda = torch.cuda.is_available()
 
 # Hyperparameters
-batch_size = 8
+batch_size = 16
 nr_epochs = 10
 momentum = 0.9
 learning_rate = 0.001
