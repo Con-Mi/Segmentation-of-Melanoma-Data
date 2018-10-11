@@ -14,8 +14,8 @@ use_cuda = torch.cuda.is_available()
 # Hyperparameters
 batch_size = 16
 nr_epochs = 10
-momentum = 0.9
-learning_rate = 0.01
+momentum = 0.93
+learning_rate = 0.02
 running_loss = 0.0
 gamma = 0.1
 milestones = [1, 2, 3, 5, 7, 8]
