@@ -31,7 +31,7 @@ transform = [ transforms.RandomHorizontalFlip(p=1.0), transforms.RandomVerticalF
              transforms.ColorJitter(saturation=1.2), transforms.ColorJitter(saturation=0.7), transforms.ColorJitter(hue=0.3),
              transforms.ColorJitter(hue=0.1) ]
 # Note: FIX AUGMENTATIONS
-train_loader, validation_loader = Melanoma_Train_Validation_DataLoader(batch_size = batch_size, data_transforms = transforms.Compose([transforms.Resize((img_size, img_size)), transforms.ToTensor()]))
+train_loader, validation_loader = Melanoma_Train_Validation_DataLoader(batch_size = batch_size, data_transforms = transforms.Compose([transforms.Resize([img_size, img_size]), transforms.ToTensor()]))
 
 optimizer = optim.SGD(segm_model.parameters(), lr = learning_rate, momentum = momentum)
 criterion = nn.BCEWithLogitsLoss().cuda() if use_cuda else nn.BCEWithLogitsLoss()
