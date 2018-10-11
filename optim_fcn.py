@@ -75,7 +75,7 @@ def train_model(cust_model, dataloaders, criterion, optimizer, num_epochs = 10, 
             # epoch_acc calculate accuracy from Jaccard loss
             epoch_acc = 0.0
 
-            print("{} Loss: {::.4f] Acc: {::.4f}".format(phase, epoch_loss, epoch_acc))
+            print("{} Loss: {::.4f} Acc: {::.4f}".format(phase, epoch_loss, epoch_acc))
             if phase == "valid" and epoch_acc > best_acc:
                 # best_acc = epoc_acc
                 # best_model_wts = copy.deepcopy(cust_model.state_dict)
