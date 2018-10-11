@@ -19,6 +19,7 @@ learning_rate = 0.001
 running_loss = 0.0
 gamma = 0.1
 milestones = [1, 2, 3, 5, 7, 8]
+img_size = 512
 
 segm_model = fcn_model(is_pretrained = True)
 if use_cuda:
@@ -30,7 +31,7 @@ transform = [ transforms.RandomHorizontalFlip(p=1.0), transforms.RandomVerticalF
              transforms.ColorJitter(saturation=1.2), transforms.ColorJitter(saturation=0.7), transforms.ColorJitter(hue=0.3),
              transforms.ColorJitter(hue=0.1) ]
 
-train_loader, validation_loader = Melanoma_Train_Validation_DataLoader(batch_size = batch_size, data_transforms = transforms.Compose([transform, transforms.ToTensor()]))
+train_loader, validation_loader = Melanoma_Train_Validation_DataLoader(batch_size = batch_size, data_transforms = transforms.Compose([transform, transforms.Resize((img_size, img_size)), transforms.ToTensor()]))
 
 optimizer = optim.SGD(segm_model.parameters(), lr = learning_rate, momentum = momentum)
 criterion = nn.BCEWithLogitsLoss().cuda() if use_cuda else nn.BCEWithLogitsLoss()
@@ -97,7 +98,7 @@ def load_model(cust_model, model_dir = "./fcn.pt"):
     cust_model.eval()
     return cust_model
 
-
+segm_model, acc = train_model(segm_model, dataloader_dict, criterion, optimizer, nr_epochs)
 
 
 try:
@@ -125,6 +126,8 @@ def mean(l, ignore_nan=False, empty=0):
     if n == 1:
         return acc
     return acc / n
+
+
 
 def iou_binary(preds, labels, EMPTY=1., ignore=None, per_image=True):
     """
