@@ -14,7 +14,7 @@ use_cuda = torch.cuda.is_available()
 
 # Hyperparameters
 batch_size = 10
-nr_epochs = 10
+nr_epochs = 15
 momentum = 0.91
 learning_rate = 0.01
 gamma = 0.1
@@ -31,7 +31,7 @@ mul_transform = ( transforms.RandomHorizontalFlip(p=1.0), transforms.RandomVerti
              transforms.ColorJitter(saturation=1.2), transforms.ColorJitter(saturation=0.7), transforms.ColorJitter(hue=0.3),
              transforms.ColorJitter(hue=0.1) )
 # Note: FIX AUGMENTATIONS
-train_loader, validation_loader = Melanoma_Train_Validation_DataLoader(batch_size = batch_size, data_transforms=transforms.Compose([transforms.Resize([img_size, img_size]), transforms.ToTensor()]))
+train_loader, validation_loader = Melanoma_Train_Validation_DataLoader(batch_size = batch_size, data_transforms=transforms.Compose([mul_transform, transforms.Resize([img_size, img_size]), transforms.ToTensor()]))
 
 
 optimizer = optim.SGD(segm_model.parameters(), lr = learning_rate, momentum = momentum)
@@ -97,5 +97,5 @@ def train_model(cust_model, dataloaders, criterion, optimizer, num_epochs = 10, 
     return cust_model, val_acc_history
 
 segm_model, acc = train_model(segm_model, dataloader_dict, criterion, optimizer, nr_epochs)
-save_model(segm_model, name = "fcn_10epch.pt")
+save_model(segm_model, name = "fcn_15epch.pt")
 
