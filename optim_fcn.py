@@ -97,5 +97,5 @@ def train_model(cust_model, dataloaders, criterion, optimizer, num_epochs = 10, 
     return cust_model, val_acc_history
 
 segm_model, acc = train_model(segm_model, dataloader_dict, criterion, optimizer, nr_epochs)
-save_model(segm_model, name = "fcn_15epch.pt")
+save_model(segm_model, name = "fcn_15epch_interpol.pt")
 
