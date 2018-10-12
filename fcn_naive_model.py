@@ -36,9 +36,10 @@ class FCNDense(nn.Module):
         self.gn2 = nn.GroupNorm(num_groups=16, num_channels=4096)
 
         self.score_fr = nn.Conv2d(4096, n_class, kernel_size = 1, padding = 0, bias = False)
+        self.elu3 = nn.ELU(inplace=True)
 
         self.upscore = nn.ConvTranspose2d(n_class, n_class, kernel_size = 32, stride=32, padding = 0, bias=False)
-
+        # TRY THIS: F.interpolete(out, size = x.size()[2], mode = "bilinear')
 
     def forward(self, x):
         out = self.encoder(x)
@@ -63,6 +64,7 @@ class FCNDense(nn.Module):
         out = self.gn2(out)
 
         out = self.score_fr(out)
+        out = self.elu3(out)
         out = self.upscore(out)
 
         return out
