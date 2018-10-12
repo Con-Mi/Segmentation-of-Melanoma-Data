@@ -13,10 +13,10 @@ import copy
 use_cuda = torch.cuda.is_available()
 
 # Hyperparameters
-batch_size = 10
+batch_size = 14
 nr_epochs = 15
-momentum = 0.91
-learning_rate = 0.01
+momentum = 0.95
+learning_rate = 0.015
 gamma = 0.1
 milestones = [1, 2, 3, 5, 7, 8]
 img_size = 512
