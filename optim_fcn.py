@@ -13,11 +13,10 @@ import copy
 use_cuda = torch.cuda.is_available()
 
 # Hyperparameters
-batch_size = 8
+batch_size = 10
 nr_epochs = 10
-momentum = 0.93
-learning_rate = 0.02
-running_loss = 0.0
+momentum = 0.91
+learning_rate = 0.01
 gamma = 0.1
 milestones = [1, 2, 3, 5, 7, 8]
 img_size = 512
@@ -80,7 +79,7 @@ def train_model(cust_model, dataloaders, criterion, optimizer, num_epochs = 10, 
             aver_jaccard = jaccard_acc / len(dataloaders[phase])
             aver_dice = dice_acc / len(dataloaders[phase])
 
-            print("{} Loss: {:.4f} Jaccard Average Acc: {:.4f} Dice Average Acc: {:.4f}".format(phase, epoch_loss, aver_jaccard, aver_dice))
+            print("| {} Loss: {:.4f} | Jaccard Average Acc: {:.4f} | Dice Average Acc: {:.4f} |".format(phase, epoch_loss, aver_jaccard, aver_dice))
             if phase == "valid" and aver_jaccard > best_acc:
                 best_acc = aver_jaccard
                 best_model_wts = copy.deepcopy(cust_model.state_dict)
@@ -88,21 +87,14 @@ def train_model(cust_model, dataloaders, criterion, optimizer, num_epochs = 10, 
             if phase == "valid":
                 val_acc_history.append(aver_jaccard)
                 pass
-        print()
+        print("="*15)
+        print(" ")
     time_elapsed = time.time() - start_time
     print("Training complete in {:.0f}m {:.0f}s".format(time_elapsed//60, time_elapsed % 60))
     print("Best validation Accuracy: {:.4f}".format(best_acc))
     best_model_wts = copy.deepcopy(cust_model.state_dict())   # Need to change this in the future when I fix the jaccard index
     cust_model.load_state_dict(best_model_wts)
     return cust_model, val_acc_history
-
-def save_model(cust_model, name = "fcn.pt"):
-    torch.save(cust_model.state_dict(), name)
-
-def load_model(cust_model, model_dir = "./fcn.pt"):
-    cust_model.load_state_dict(torch.load(model_dir))
-    cust_model.eval()
-    return cust_model
 
 segm_model, acc = train_model(segm_model, dataloader_dict, criterion, optimizer, nr_epochs)
 save_model(segm_model, name = "fcn_10epch.pt")
