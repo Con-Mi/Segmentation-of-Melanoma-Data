@@ -13,7 +13,7 @@ import copy
 use_cuda = torch.cuda.is_available()
 
 # Hyperparameters
-batch_size = 16
+batch_size = 8
 nr_epochs = 10
 momentum = 0.93
 learning_rate = 0.02
@@ -82,11 +82,11 @@ def train_model(cust_model, dataloaders, criterion, optimizer, num_epochs = 10, 
 
             print("{} Loss: {:.4f} Jaccard Average Acc: {:.4f} Dice Average Acc: {:.4f}".format(phase, epoch_loss, aver_jaccard, aver_dice))
             if phase == "valid" and aver_jaccard > best_acc:
-                # best_acc = epoc_acc
-                # best_model_wts = copy.deepcopy(cust_model.state_dict)
+                best_acc = aver_jaccard
+                best_model_wts = copy.deepcopy(cust_model.state_dict)
                 pass
             if phase == "valid":
-                # val_acc_history.append(epoch_acc)
+                val_acc_history.append(aver_jaccard)
                 pass
         print()
     time_elapsed = time.time() - start_time
