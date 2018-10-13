@@ -1,5 +1,6 @@
 import torch
 import numpy as np
+import cv2
 
 try:
     from itertools import  ifilterfalse
@@ -60,7 +61,25 @@ def dice(y_true, y_pred):
 def save_model(cust_model, name = "fcn.pt"):
     torch.save(cust_model.state_dict(), name)
 
-def load_model(cust_model, model_dir = "./fcn.pt"):
-    cust_model.load_state_dict(torch.load(model_dir))
+def load_model(cust_model, model_dir = "./fcn.pt", map_location_device = "cpu"):
+    cust_model.load_state_dict(torch.load(model_dir, map_location = map_location_device))
     cust_model.eval()
     return cust_model
+
+def output_trchtensor_to_numpy(torch_tensor):
+    numpy_ndarray = torch_tensor.squeeze(0)
+    numpy_ndarray = numpy_ndarray.permute(1, 2, 0)
+    numpy_ndarray = numpy_ndarray.squeeze()
+    numpy_ndarray = numpy_ndarray.detach().numpy()
+    return numpy_ndarray
+
+def mask_overlay(image, mask, color=(0, 1, 0)):
+    """
+    Helper function to visualize mask on the top of the image
+    """
+    mask = np.dstack((mask, mask, mask)) * np.array(color)
+    weighted_sum = cv2.addWeighted(mask, 0.5, image, 0.5, 0.)
+    img = image.copy()
+    ind = mask[:, :, 1] > 0
+    img[ind] = weighted_sum[ind]    
+    return img
