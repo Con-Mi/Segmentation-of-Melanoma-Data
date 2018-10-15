@@ -36,3 +36,4 @@ for thrs in thrs_list:
 idx = thrs_df.loc[thrs_df["Accuracy"] == max(thrs_df["Accuracy"])]
 optimal_thrs = thrs_df["Threshold"].loc[idx.index.values]
 print("Optimal Threshold is {:.8f} found with Accuracy of {:.4f}".format(optimal_thrs.values, max(thrs_df["Accuracy"])))
+thrs_df.to_csv("accuracyVSthreshold.csv")
