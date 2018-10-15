@@ -10,7 +10,7 @@ from helper import jaccard, dice, load_model
 use_cuda = torch.cuda.is_available()
 
 # Hyperparameters
-thrs_list = np.linspace(0.1, 0.9, 500) 
+thrs_list = np.linspace(0.1, 0.9, 2) 
 batch_size = 10
 num_workers = 10
 
@@ -35,5 +35,5 @@ for thrs in thrs_list:
 
 idx = thrs_df.loc[thrs_df["Accuracy"] == max(thrs_df["Accuracy"])]
 optimal_thrs = thrs_df["Threshold"].loc[idx.index.values]
-print("Optimal Threshold is {:.8f} found with Accuracy of {:.4f}".format(optimal_thrs.values, max(thrs_df["Accuracy"])))
 thrs_df.to_csv("accuracyVSthreshold.csv")
+print("Optimal Threshold is {:.8f} found with Accuracy of {:.4f}".format(optimal_thrs, max(thrs_df["Accuracy"])))
