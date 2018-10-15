@@ -33,6 +33,6 @@ for thrs in thrs_list:
     print("Threshold {:.8f} | Jaccard Accuracy: {:.8f}".format(thrs, jaccard_acc / len(validation_loader)))
     thrs_df["Accuracy"] = (jaccard_acc / len(validation_loader))
 
-idx = df.loc[df["Accuracy"] == max(df["Accuracy"])]
-optimal_thrs = df["Threshold"].loc[idx.index.values]
-print("Optimal Threshold is {:.8f} found with Accuracy of {:.4f}".format(optimal_thr.values, max(df["Accuracy"])))
+idx = thrs_df.loc[thrs_df["Accuracy"] == max(thrs_df["Accuracy"])]
+optimal_thrs = thrs_df["Threshold"].loc[idx.index.values]
+print("Optimal Threshold is {:.8f} found with Accuracy of {:.4f}".format(optimal_thr.values, max(thrs_df["Accuracy"])))
