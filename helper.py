@@ -1,6 +1,8 @@
 import torch
 import numpy as np
 import cv2
+from os import listdir
+import pandas as pd
 
 try:
     from itertools import  ifilterfalse
@@ -86,3 +88,17 @@ def mask_overlay(image, mask, color=(0, 1, 0)):
     ind = mask[:, :, 1] > 0
     img[ind] = weighted_sum[ind]    
     return img
+
+def make_mask_overlay(mask_img, orig_img, mask_alpha):
+    original_img = cv2.imread(orig_img)
+    mask = cv2.imread(mask_img)
+    overlayed_img = cv2.addWeighted(original_img, 1, mask, mask_alpha, 0, 0)
+    cv2.imwrite("overlayed_" + orig_img + ".png", overlayed_img)
+    
+def get_ids_from_file_in_list(path):
+    list_ids = [f for f in listdir(path)]
+    list_ids = sorted(list_ids)
+    return list_ids
+
+
+

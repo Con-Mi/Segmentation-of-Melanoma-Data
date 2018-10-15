@@ -39,7 +39,7 @@ class FCNDense(nn.Module):
         #self.elu3 = nn.ELU(inplace=True)
 
         self.upscore = nn.ConvTranspose2d(n_class, n_class, kernel_size = 32, stride=32, padding = 0, bias=False)
-        # TRY THIS: F.interpolete(out, size = x.size()[2], mode = "bilinear')
+        # TRY THIS: F.interpolate(out, size = x.size()[2], mode = "bilinear')
 
     def forward(self, x):
         out = self.encoder(x)
