@@ -10,7 +10,7 @@ use_cuda = torch.cuda.is_available()
 
 # Hyperparameters
 thrs_list = np.linspace(0.5, 0.95, 1000) 
-batch_size = 12
+batch_size = 10
 num_workers = 4
 
 _, validation_loader = Melanoma_Train_Validation_DataLoader(batch_size = batch_size,  data_transforms=transforms.Compose([transforms.Resize([512, 512]), transforms.ToTensor()]), num_workers=num_workers)
