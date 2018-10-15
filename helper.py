@@ -62,7 +62,10 @@ def save_model(cust_model, name = "fcn.pt"):
     torch.save(cust_model.state_dict(), name)
 
 def load_model(cust_model, model_dir = "./fcn.pt", map_location_device = "cpu"):
-    cust_model.load_state_dict(torch.load(model_dir, map_location = map_location_device))
+    if map_location_device == "cpu":
+        cust_model.load_state_dict(torch.load(model_dir, map_location = map_location_device))
+    elif map_location_device == "gpu":
+        cust_model.load_state_dict(torch.load(model_dir))
     cust_model.eval()
     return cust_model
 
