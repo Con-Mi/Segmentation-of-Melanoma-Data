@@ -50,5 +50,15 @@ class LinkNet(nn.Module):
         self.conv4 = encoder.layer3
         self.conv5 = encoder.layer4
 
+        self.center = Upsample()
+
+        self.dec5 =
+        self.dec4 =
+        self.dec3 =
+        self.dec2 =
+        self.dec1 =
+
+        self.final = nn.Conv2d(num_filters, num_classes, kernel_size=1)
+
     def forward(self, x):
         pass
