@@ -10,7 +10,7 @@ from helper import jaccard, dice, load_model
 use_cuda = torch.cuda.is_available()
 
 # Hyperparameters
-thrs_list = np.linspace(0.5, 0.95, 100) 
+thrs_list = np.linspace(0.2, 0.9, 300) 
 batch_size = 10
 num_workers = 10
 
