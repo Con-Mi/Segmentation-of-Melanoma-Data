@@ -14,7 +14,7 @@ use_cuda = torch.cuda.is_available()
 
 # Hyperparameters
 batch_size = 12
-nr_epochs = 15
+nr_epochs = 30
 momentum = 0.95
 learning_rate = 0.015
 gamma = 0.1
@@ -97,5 +97,5 @@ def train_model(cust_model, dataloaders, criterion, optimizer, num_epochs = 10, 
     return cust_model, val_acc_history
 
 segm_model, acc = train_model(segm_model, dataloader_dict, criterion, optimizer, nr_epochs)
-save_model(segm_model, name = "fcn_15epch_interpol.pt")
+save_model(segm_model, name = "fcn_30epch_interpol.pt")
 
