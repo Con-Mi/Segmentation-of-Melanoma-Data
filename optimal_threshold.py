@@ -10,7 +10,7 @@ use_cuda = torch.cuda.is_available()
 
 # Hyperparameters
 thrs_list = np.linspace(0.5, 0.95, 1000) 
-batch_size = 2
+batch_size = 16
 num_workers = 4
 
 _, validation_loader = Melanoma_Train_Validation_DataLoader(batch_size = batch_size,  data_transforms=transforms.Compose([transforms.Resize([512, 512]), transforms.ToTensor()]), num_workers=8)
@@ -29,3 +29,4 @@ for thrs in thrs_list:
         jaccard_acc += jaccard(label_img, (preds > thrs).float())
     print("Threshold {:.8f} | Jaccard Accuracy: {:.8f}".format(thrs, jaccard_acc / len(validation_loader)))
     thrs_dict[thrs] = (jaccard_acc / len(validation_loader))
+
