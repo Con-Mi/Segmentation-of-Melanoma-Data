@@ -1,5 +1,4 @@
 from data_loader import Melanoma_Train_Data
-from torch.utils.data import DataLoader
 from PIL import Image
 from torchvision import utils
 from torchvision import transforms

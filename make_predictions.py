@@ -62,7 +62,7 @@ print(binary_output.shape)
 print("Type of image")
 print(type(img))
 print("Type of binary")
-print(binary_output.type())
+print(binary_output)
 
 # ERROR HERE. ERROR WITH OPENCV.
 overlay_img = mask_overlay(img, binary_output)
