@@ -2,6 +2,7 @@ import torch
 import numpy as np
 from torchvision import transforms
 import pandas as pd
+import gc
 
 from linknet import linknet_model
 from data_loader import Melanoma_Train_Validation_DataLoader
@@ -21,6 +22,7 @@ model = load_model(model, model_dir="linknet_10epch.pt", map_location_device="gp
 columns = ["Threshold", "Accuracy"]
 thrs_df = pd.DataFrame(columns = columns)
 thrs_df["Threshold"] = thrs_list
+del columns
 
 for thrs in thrs_list:
     jaccard_acc = 0.0
@@ -32,6 +34,7 @@ for thrs in thrs_list:
         jaccard_acc += jaccard(label_img, (preds > thrs).float())
     print("Threshold {:.8f} | Jaccard Accuracy: {:.8f}".format(thrs, jaccard_acc / len(validation_loader)))
     thrs_df["Accuracy"] = (jaccard_acc / len(validation_loader))
+    gc.collect()
 
 idx = thrs_df.loc[thrs_df["Accuracy"] == max(thrs_df["Accuracy"])]
 optimal_thrs = thrs_df["Threshold"].loc[idx.index.values]
