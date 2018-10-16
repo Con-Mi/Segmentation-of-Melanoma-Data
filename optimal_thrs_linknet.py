@@ -29,8 +29,7 @@ for thrs in thrs_list:
     for input_img, label_img in validation_loader:
         input_img = input_img.cuda() if use_cuda else input_img
         label_img = label_img.cuda() if use_cuda else label_img
-        outputs = model(input_img)
-        preds = torch.sigmoid(outputs)
+        preds = torch.sigmoid(model(input_img))
         jaccard_acc += jaccard(label_img, (preds > thrs).float())
     print("Threshold {:.8f} | Jaccard Accuracy: {:.8f}".format(thrs, jaccard_acc / len(validation_loader)))
     thrs_df["Accuracy"] = (jaccard_acc / len(validation_loader))
