@@ -21,7 +21,7 @@ gamma = 0.1
 milestones = [1, 2, 3, 5, 7, 8]
 img_size = 512
 
-segm_model = linknet_model(is_pretrained = True)
+segm_model = linknet_model()
 if use_cuda:
     segm_model.cuda()
 
