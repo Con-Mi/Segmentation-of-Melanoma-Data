@@ -49,7 +49,7 @@ class LinkNet(nn.Module):
         self.conv4 = encoder.layer3 #32
         self.conv5 = encoder.layer4 #16
 
-        self.pool = nn.MaxPool2d(kernel_size=3, stride=2, padding=1) #8
+        self.pool = nn.AvgPool2d(kernel_size=3, stride=2, padding=1) #8
 
         self.center = Upsample(2048, num_filters*8, num_filters*8) #16
 
@@ -77,8 +77,8 @@ class LinkNet(nn.Module):
         dec3 = self.dec3(torch.cat([dec4, conv3], 1))
         dec2 = self.dec2(torch.cat([dec3, conv2], 1))
         dec1 = self.dec1(torch.cat([dec2, conv1], 1))
-        return self.final(dec1)
+        return torch.sigmoid(self.final(dec1))
 
 
-def linknet_batch_model(num_classes=1, num_input_channels=3):
+def linknet_batch_model(num_classes=1, num_input_channels=3, transp=True):
     return LinkNet(num_classes, num_input_channels)
