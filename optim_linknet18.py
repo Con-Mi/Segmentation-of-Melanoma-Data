@@ -3,7 +3,7 @@ import torch.nn as nn
 import torch.optim as optim
 from torchvision import transforms
 
-from linknet import linknet_model
+from linknet_resnet18 import linknet18_model
 from data_loader import Melanoma_Train_Validation_DataLoader
 from helper import jaccard, dice, save_model
 
@@ -13,7 +13,7 @@ import copy
 use_cuda = torch.cuda.is_available()
 
 # Hyperparameters
-batch_size = 4
+batch_size = 16
 nr_epochs = 10
 momentum = 0.95
 learning_rate = 0.015
@@ -21,7 +21,7 @@ gamma = 0.1
 milestones = [1, 2, 3, 5, 7, 8]
 img_size = 512
 
-segm_model = linknet_model()
+segm_model = linknet18_model()
 if use_cuda:
     segm_model.cuda()
 
