@@ -27,7 +27,7 @@ class MelanomaDataset(Dataset):
     
     def __getitem__(self, index):
         if index not in range(len(self.file_list_data_idx)):
-            return self.__getitem__(np.random.randint(o, self.__len__()))
+            return self.__getitem__(np.random.randint(0, self.__len__()))
         
         file_id = self.file_list_data_idx["ids"].iloc[index]
         if self.mode is "train":
