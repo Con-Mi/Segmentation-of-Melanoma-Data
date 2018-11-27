@@ -9,7 +9,7 @@ from torch.utils.data.sampler import SubsetRandomSampler
 
 class MelanomaDataset(Dataset):
     def __init__(self, file_list_data_idx, file_list_label_idx = None, transform = None, mode = "train"):
-        self.data_root = "./MelanomaData/"
+        self.data_root = "../data/"
         self.file_list_data_idx = file_list_data_idx
         self.file_list_label_idx = file_list_label_idx
         self.transform = transform
@@ -57,8 +57,8 @@ def Melanoma_Train_Data(data_transforms = None):
     return data_set
 
 def Melanoma_Train_Validation_DataLoader(batch_size = 4, validation_split = 0.1, num_workers = 8, data_transforms = None):
-    file_list_input = pd.read_csv("./MelanomaData/train_input_ids.csv")
-    file_list_label = pd.read_csv("./MelanomaData/train_labels_ids.csv")
+    file_list_input = pd.read_csv("../data/train_input_ids.csv")
+    file_list_label = pd.read_csv("../data/train_labels_ids.csv")
     if data_transforms is None:
         data_transforms = transforms.ToTensor()
     dataset = MelanomaDataset(file_list_input, file_list_label, transform = data_transforms, mode = "train")
