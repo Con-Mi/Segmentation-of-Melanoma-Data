@@ -33,7 +33,7 @@ optimizerSGD = optim.SGD(segm_model.parameters(), lr=lr_rate, momentum=momentum)
 criterion = nn.BCELoss().cuda() if use_cuda else nn.BCELoss()
 scheduler = optim.lr_scheduler.MultiStepLR(optimizerSGD, milestones=milestones, gamma=gamma)
 
-train_loader, valid_loader = Melanoma_Train_Validation_DataLoader(batch_size=batch_size, validation_split = 0.1, num_workers = 8, data_transforms = mul_transf)
+train_loader, valid_loader = Melanoma_Train_Validation_DataLoader(batch_size=batch_size, validation_split = 0.1, num_workers = 8, data_transforms = transforms.Compose(mul_transf))
 
 dict_loaders = {"train":train_loader, "valid":valid_loader}
 
